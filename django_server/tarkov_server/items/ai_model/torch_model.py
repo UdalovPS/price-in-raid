@@ -5,7 +5,7 @@ from PIL import Image
 
 
 class SeachMarkAI:
-    def __init__(self, weight_path="./weights.pt", show_info_flag=False):
+    def __init__(self, weight_path="./items/ai_model/model_weight.pt", show_info_flag=False):
         self.pre_x_min = 0
         self.pre_x_max = 0
         self.pre_y_min = 0
@@ -13,7 +13,7 @@ class SeachMarkAI:
         self.img_width = 1920
         self.img_height = 1920
         self.show_info_flag = show_info_flag
-        self.model = torch.hub.load('ultralytics/yolov5', 'custom', weight_path)
+        self.model = torch.hub.load('./items/ai_model/yolov5', 'custom', path=weight_path, source='local')
 
     def seach_mark_in_screenshot(self, img: np.array) -> np.array:
         """This method seach object in screenshot and crop image if object find"""

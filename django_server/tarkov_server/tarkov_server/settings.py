@@ -139,4 +139,4 @@ EMAIL_HOST_USER = 'priceinraid@mail.ru'
 EMAIL_HOST_PASSWORD = 'AL7F2tC6yu6s1WFW3SHv'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 CSRF_COOKIE_SECURE = False
-
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760

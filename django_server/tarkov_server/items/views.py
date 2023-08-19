@@ -12,7 +12,12 @@ from django.contrib.auth.views import LogoutView
 from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm
 from django.core.mail import BadHeaderError, send_mail
 from password_generator import PasswordGenerator
-from django.views.decorators.csrf import csrf_exempt
+import cv2
+
+import numpy as np
+from PIL import Image
+
+from .ai_model.torch_model import SeachMarkAI
 
 class MyLogoutView(LogoutView):
     next_page = '/'
@@ -274,15 +279,17 @@ class ChechIpView(View):
 
 def get_item_data(request):
     if request.method == "POST":
-        # img = json_numpy.loads(request.body)
-        transcript_obj = Transcripter()
+        transcript_obj = Transcripter()                                                     #create object for transcripte text from image
         language = request.POST['lng']
-        img = json_numpy.loads(request.POST['json'])
+        obj = SeachMarkAI(show_info_flag=True)                                              #create object for find mark with item name in image
+        img = json_numpy.loads(request.POST['json'])                                        #load image from request
+        img = cv2.resize(img, dsize=(1920, 1920), interpolation=cv2.INTER_CUBIC)            #resize image (model train in 1920x1920)
+        crop_img = obj.seach_mark_in_screenshot(img)                                        #find mark with item
         login = request.POST['login']
         password = request.POST['password']
         print('language: ', language)
-        text = transcript_obj.transcript_text_from_image(img, language=language)
-        item_dict = transcript_obj.find_item_from_json_data(text, language=language)
+        text = transcript_obj.transcript_text_from_image(crop_img, language=language)       #transcripte text in image
+        item_dict = transcript_obj.find_item_from_json_data(text, language=language)        #find data about item in database (json file)
         print(item_dict)
         print("TEXT: ", item_dict["name"])
         return HttpResponse(json.dumps(item_dict))
