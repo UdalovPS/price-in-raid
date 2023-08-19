@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="middle_box">
+        <form method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            <input type="hidden" name="language" id="example">
+            <script type="text/javascript">
+                document.getElementById('example').value=val();
+            </script>
+            <h2 class="register-title">{{ texts.register }}</h2>
+            <h4>{{ texts.login_log }}</h4>
+            {{ form.username }}
+            <h4>{{ texts.email }}</h4>
+            {{ form.email }}
+            <h4>{{ texts.password }}</h4>
+            {{ form.password1 }}
+            <h4>{{ texts.password2 }}</h4>
+            {{ form.password2 }}
+            <button class="sign_in" type="submit" onclick = "location.href='?lng='+val();return false;">{{ texts.create_btn }}</button>
+            <p class="message">{{ texts.alredy_registered }} <a href="{% url 'login' %}" onclick = "location.href=this.href+'?lng='+val();return false;">{{ texts.login }}</a></p>
+            <p class="error">
+                {{ form.non_field_errors }}
+            </p>
+        </form>
+    </div>
+{% endblock %}

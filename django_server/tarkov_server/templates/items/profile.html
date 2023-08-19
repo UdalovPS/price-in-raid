@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+    <div class="middle_box">
+        <form method="post" action="">
+            <h2 class="register-title">{{ texts.profile }}</h2>
+            <h4>{{ texts.login_log }}</h4>
+            <div class="profile_labels">
+                {{ data.name }}
+            </div>
+            <h4>{{ texts.email }}</h4>
+            <div class="profile_labels">
+                {{ data.email }}
+            </div>
+            <h4>{{ texts.ip }}</h4>
+            <div class="profile_labels">
+                {% if data.ip %}
+                    {{ data.ip }}
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+            <h4>{{ texts.assess_date }}</h4>
+            <div class="profile_labels">
+                {% if data.use_date %}
+                    {{ data.use_date }}
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+            <p class="message"><a href="{% url 'change' %}" onclick = "location.href=this.href+'?lng='+val();return false;">{{ texts.change_password }}</a></p>
+            <p class="message"><a href="{% url 'register' %}" onclick = "location.href=this.href+'?lng='+val();return false;">{{ texts.extend_sub }}</a></p>
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}

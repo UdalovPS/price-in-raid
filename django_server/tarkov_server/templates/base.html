@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href='{% static "css/styles.css" %}'>
+    <title>Tarkov Sell</title>
+    <header class="frame">
+        <div class="empty_box"></div>
+        <div class="main_url">
+            <a href="{% url 'main' %}" onclick = "location.href=this.href+'?lng='+val();return false;" class="header-link">PriceInRaid.ru</a>
+        </div>
+        <div class="big_empty_box"></div>
+        <div class="url_box">
+            <a href="" class="header-link">{{ texts.instruction }}</a>
+        </div>
+        <div class="url_box">
+                <a href="{% url 'download'%}" onclick = "location.href=this.href+'?lng='+val();return false;"  class="header-link">{{ texts.download }}</a>
+        </div>
+        {% if request.user.is_authenticated %}
+        <div class="url_box">
+            <a href="{% url 'logout' %}" onclick = "location.href=this.href+'?lng='+val();return false;" class="header-link">{{ texts.logout }}</a>
+        </div>
+        {% else %}
+        <div class="url_box">
+            <a href="{% url 'login' %}" onclick = "location.href=this.href+'?lng='+val();return false;" class="header-link">{{ texts.login }}</a>
+        </div>
+        {% endif %}
+
+        {% block menu %}
+        {% endblock %}
+
+        <div class="url_box">
+            <a href="{% url 'profile' %}" onclick = "location.href=this.href+'?lng='+val();return false;" class="header-link">{{ texts.profile }}</a>
+        </div>
+        <div class="url_box">
+            <select id="lang" class="language_box">
+                {% if texts.lng == 'rus' %}
+                  <option value="rus">rus</option>
+                  <option value="eng">eng</option>
+                {% endif %}
+                {% if texts.lng == 'eng' %}
+                  <option value="eng">eng</option>
+                  <option value="rus">rus</option>
+                {% endif %}
+            </select>
+        </div>
+        <script>
+            function val() {
+                var d = document.getElementById("lang");
+                return d.value;
+            }
+        </script>
+    </header>
+
+</head>
+<body>
+    <div class="container">
+        <img class="base_img" src="{% static 'img/base.png' %}" alt="photo">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script>
+         var lang = document.getElementById('lang');
+        lang.onchange = function() {
+        window.location = window.location.href.split('?')[0] + '?lng=' + lang.options[lang.options.selectedIndex].value;
+        }
+    </script>
+</body>
+<footer class="frame">
+    <div class="empty_box"></div>
+    Footer
+</footer>
+</html>
