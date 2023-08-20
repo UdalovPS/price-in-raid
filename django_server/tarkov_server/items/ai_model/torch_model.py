@@ -1,35 +1,39 @@
-import torch
-import cv2
 import numpy as np
 from PIL import Image
+from ultralytics import YOLO
 
 
 class SeachMarkAI:
-    def __init__(self, weight_path="./items/ai_model/model_weight.pt", show_info_flag=False):
+    def __init__(self, weight_path="./items/ai_model/yolov8_weights.pt", show_info_flag=False):
         self.pre_x_min = 0
         self.pre_x_max = 0
         self.pre_y_min = 0
         self.pre_y_max = 0
-        self.img_width = 1920
-        self.img_height = 1920
+        self.img_width = 1280
+        self.img_height = 1280
         self.show_info_flag = show_info_flag
-        self.model = torch.hub.load('./items/ai_model/yolov5', 'custom', path=weight_path, source='local')
+        # self.model = torch.hub.load('./items/ai_model/yolov5', 'custom', path=weight_path, source='local')
+        self.model = YOLO(weight_path)
 
     def seach_mark_in_screenshot(self, img: np.array) -> np.array:
         """This method seach object in screenshot and crop image if object find"""
-        results = self.model(img)
-        cord = results.pandas().xyxy[0]
-        if self.show_info_flag == True:
-            print(f"[INFO] {cord}")
-        if cord.empty:          #if object not find in screenshot
-            res_img = np.array([])
-        else:                   #if object is finded
-            x_min = int(cord.xmin[0]) + 3
-            x_max = int(cord.xmax[0])
-            y_min = int(cord.ymin[0])
-            y_max = int(cord.ymax[0])
+        try:
+            result = self.model.predict(img)
+            box = result[0].boxes[0]
+            cords = box.xyxy[0].tolist()
+            if self.show_info_flag == True:
+                print(f"[INFO] {cords}")
+            x_min = int(cords[0]) + 3
+            x_max = int(cords[2])
+            y_min = int(cords[1])
+            y_max = int(cords[3])
             res_img = img[y_min:y_max, x_min:x_max]
-        return res_img
+            return res_img
+        except:
+            if self.show_info_flag == True:
+                print(f"[INFO] object not find")
+            return np.array([])
+
 
     def show_image(self, img) -> None:
         """This is helper method need for show result image"""
@@ -48,7 +52,7 @@ class SeachMarkAI:
         return res
 
 if __name__ == '__main__':
-    model_path ="./model_weight.pt"
+    model_path ="./yolov8_weights.pt"
     obj = SeachMarkAI(weight_path=model_path, show_info_flag=True)
     image_path = "./129.png"
     img = obj.open_test_image(image_path)
