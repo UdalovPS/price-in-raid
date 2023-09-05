@@ -17,5 +17,6 @@ urlpatterns = [
     path("message/", views.ChangePasswordView.as_view(), name='message'),
     path("drop/", views.DropPasswordView.as_view(), name='drop'),
     path("ip/", csrf_exempt(views.ChechIpView.as_view()), name='check_ip'),
+    path("test/", csrf_exempt(views.TestConnectView.as_view()), name='test_connect'),
 ]
 

@@ -12,8 +12,9 @@ password = 'admin_password'
 lng = 'rus'
 
 img = Image.open(image_path)
-# img_numpy = np.array(img.resize((1920, 1920)))
+img_numpy = np.array(img.resize((1280, 1280)))
 img_numpy = np.array(img)
+Image.fromarray(img_numpy).show()
 json_np = json_numpy.dumps(img_numpy)
 
 data = {

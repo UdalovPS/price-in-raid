@@ -279,29 +279,48 @@ class ChechIpView(View):
 
 def get_item_data(request):
     if request.method == "POST":
-        transcript_obj = Transcripter()                                                     #create object for transcripte text from image
-        language = request.POST['lng']
-        obj = SeachMarkAI(show_info_flag=True)                                              #create object for find mark with item name in image
-        img = json_numpy.loads(request.POST['json'])                                        #load image from request
-        img = cv2.resize(img, dsize=(1920, 1920), interpolation=cv2.INTER_CUBIC)            #resize image (model train in 1920x1920)
-        # Image.fromarray(img).show()
-        crop_img = obj.seach_mark_in_screenshot(img)                                        #find mark with item
-        # Image.fromarray(crop_img).show()
         login = request.POST['login']
         password = request.POST['password']
-        # print('language: ', language)
-        text = transcript_obj.transcript_text_from_image(crop_img, language=language)       #transcripte text in image
-        # print("image text: ", text)
-        item_dict = transcript_obj.find_item_from_json_data(text, language=language)        #find data about item in database (json file)
-        # print("item_dict:", item_dict)
-        # print("TEXT: ", item_dict["name"])
-        return HttpResponse(json.dumps(item_dict))
+        user = authenticate(username=login, password=password)
+        if user != None:
+            transcript_obj = Transcripter()                                                     #create object for transcripte text from image
+            language = request.POST['lng']
+            obj = SeachMarkAI(show_info_flag=True)                                              #create object for find mark with item name in image
+            img = json_numpy.loads(request.POST['json'])                                        #load image from request
+            img = cv2.resize(img, dsize=(1280, 1280), interpolation=cv2.INTER_CUBIC)            #resize image (model train in 1920x1920)
+            crop_img = obj.seach_mark_in_screenshot(img)                                        #find mark with item
+            if crop_img.size == 0:
+                print('NOT FINDDDEDDD')
+                data = {'traderName': 'not find', 'traderPrice': 'not find', 'pricePerSlot': 'not find', "canSellOnFlea": True}
+            else:
+                # Image.fromarray(crop_img).show()
+                text = transcript_obj.transcript_text_from_image(crop_img, language=language)       #transcripte text in image
+                print('TEXT: ', text)
+                item_dict = transcript_obj.find_item_from_json_data(text, language=language)        #find data about item in database (json file)
+                return HttpResponse(json.dumps(item_dict))
+        else:
+            data = {'traderName': 'error auth', 'traderPrice': 'error auth', 'pricePerSlot': 'error auth', "canSellOnFlea": True}
+        return HttpResponse(json.dumps(data))
+
 
 def change_language(request):
     language = request.GET.get('lng')
     print(language)
     language = 'rus'
     return HttpResponse(f"Your language is {language}")
+
+
+class TestConnectView(View):
+    def post(self, request):
+        login = request.POST['login']
+        password = request.POST['password']
+        user = authenticate(username=login, password=password)
+        if user != None:
+            print("Is AUTHENFICATED")
+            data = {'status': 'ok'}
+        else:
+            data = {'status': 'error auth'}
+        return HttpResponse(json.dumps(data))
 
 
 

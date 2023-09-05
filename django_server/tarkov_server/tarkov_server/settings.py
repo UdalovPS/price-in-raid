@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-tckl1p5b6v)!mza5hy3%lc5dyi-mk5wn_wyir@h21vm7b0)8)9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.0.7", "127.0.0.1"]
+ALLOWED_HOSTS = ["192.168.0.7", "127.0.0.1", 'localhost']
 
 
 # Application definition
@@ -139,4 +139,4 @@ EMAIL_HOST_USER = 'priceinraid@mail.ru'
 EMAIL_HOST_PASSWORD = 'AL7F2tC6yu6s1WFW3SHv'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 CSRF_COOKIE_SECURE = False
-DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760
+DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600
