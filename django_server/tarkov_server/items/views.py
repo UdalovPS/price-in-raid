@@ -279,6 +279,7 @@ class ChechIpView(View):
 
 def get_item_data(request):
     if request.method == "POST":
+        print("REQUEST in HERE")
         login = request.POST['login']
         password = request.POST['password']
         user = authenticate(username=login, password=password)
