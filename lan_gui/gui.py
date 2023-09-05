@@ -39,7 +39,7 @@ class TarkovSellGui(QtWidgets.QMainWindow):
 
     def _test_connect(self):
         """This method start or stop seaching image in monitor"""
-        url = "http://localhost:8000/test/"
+        url = "http://212.109.195.150/test/"
         data = {
             'login': self.ui.login_edit.text(),
             'password': self.ui.password_edit.text()
@@ -61,7 +61,7 @@ class TarkovSellGui(QtWidgets.QMainWindow):
             return res
 
     def get_item_data(self) -> None:
-        url = "http://localhost:8000/item/"
+        url = "http://212.109.195.150/item/"
         lng = self.ui.box_lng.currentText()
         img = self.make_np_screenshot()
         json_np = json_numpy.dumps(img)
