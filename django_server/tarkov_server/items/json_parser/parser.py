@@ -9,6 +9,7 @@ import base64
 import json
 import urllib.parse
 
+import time
 import os
 
 
@@ -85,32 +86,34 @@ class Parser:
                 range(startPage, endPage)
             )
 
-            for pageItems in progressbar.progressbar(iterator, max_value=cls.SECTION_SIZE):
-                if len(pageItems) == 0:
-                    # Если на странице 0 результатов - завершаем цикл
-                    # Выполнятся ещё максимум {NUM_THREADS - 1} заданий, находящихся в очереди, то есть отправятся запросы на пустые страницы со слишком большим номером
-                    executor.shutdown(wait=False)
-                    break
+            with progressbar.ProgressBar(max_value=cls.SECTION_SIZE) as bar:
+                for pageItems in progressbar.progressbar(iterator):
+                    if len(pageItems) == 0:
+                        # Если на странице 0 результатов - завершаем цикл
+                        # Выполнятся ещё максимум {NUM_THREADS - 1} заданий, находящихся в очереди, то есть отправятся запросы на пустые страницы со слишком большим номером
+                        executor.shutdown(wait=False)
+                        break
+                    bar.increment()
 
                 # Добавляем ссылки из товаров со страницы в общий массив
-                for item in pageItems:
-                    try:
-                        tmp_dict = {}
-                        tmp_dict["name"] = item["shortName"]
-                        tmp_dict['engName'] = cls._format_data_for_seach(item['name'])
-                        tmp_dict['rusName'] = cls._format_data_for_seach(item['ruName'])
-                        tmp_dict['pricePerSlot'] = item['pricePerSlot']
-                        tmp_dict['traderName'] = item['traderName']
-                        tmp_dict['traderPrice'] = item['traderPrice']
-                        tmp_dict["canSellOnFlea"] = item["canSellOnFlea"]
-                        allItemLinks[item['shortName']] = tmp_dict
-                    except:
-                        continue
+                    for item in pageItems:
+                        try:
+                            tmp_dict = {}
+                            tmp_dict["name"] = item["shortName"]
+                            tmp_dict['engName'] = cls._format_data_for_seach(item['name'])
+                            tmp_dict['rusName'] = cls._format_data_for_seach(item['ruName'])
+                            tmp_dict['pricePerSlot'] = item['pricePerSlot']
+                            tmp_dict['traderName'] = item['traderName']
+                            tmp_dict['traderPrice'] = item['traderPrice']
+                            tmp_dict["canSellOnFlea"] = item["canSellOnFlea"]
+                            allItemLinks[item['shortName']] = tmp_dict
+                        except:
+                            continue
                     # allItemLinks.append(
                     #     f"https://tarkov-market.com/item/{item['url']}"
                     # )
 
-            if len(pageItems) == 0: break
+                if len(pageItems) == 0: break
 
         return allItemLinks
 
@@ -155,8 +158,11 @@ class Parser:
 
                 break
             
-            except requests.exceptions.Timeout:
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
                 pass
+
+            except Exception as e:
+                print(e)
 
         return cls._decodeItems(response["items"])
         
