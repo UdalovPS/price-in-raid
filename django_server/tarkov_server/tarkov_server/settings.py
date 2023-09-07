@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'tarkov_server.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
