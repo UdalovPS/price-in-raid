@@ -1,0 +1,139 @@
+.frame {
+    height: 100px;
+    background: black;
+    font-size: 20px;
+    color: white;
+}
+a{
+    color: white;
+}
+.empty_box {
+    width: 10%;
+    height: 100%;
+    float: left;
+}
+.big_empty_box {
+    width: 20%;
+    height: 100%;
+    float: left;
+}
+.url_box {
+    float: left;
+    height: 100%;
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: serif;
+}
+.main_url {
+    float: left;
+    height: 100%;
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+}
+.middle_box {
+    background: rgba(0, 0, 0, .5);
+    width: 30%;
+    top:40%;
+    left:35%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: serif;
+}
+
+H2 {text-align: center}
+H4 {text-align: center}
+
+#id_username, #id_email, #id_password1, #id_password2, #id_password{
+    width: 80%;
+    height: 30px;
+    font-size: 20px;
+    left: 10%;
+    position: relative;
+}
+
+.middle_box_log {
+    background: rgba(0, 0, 0, .5);
+    height: 30%;
+    width: 30%;
+    top:40%;
+    left:35%;
+    position: absolute;
+}
+.header_middle_box {
+    border: 2px solid #949580;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.content_middle_box {
+    border: 2px solid #949580;
+    width: 100%;
+    height: 17%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+form {
+    height: 100%;
+    width: 100%;
+    color: white;
+}
+.sign_in {
+    height: 40px;
+    width:40%;
+    position: relative;
+    left: 30%;
+    margin: 20px;
+    font-size: 20px;
+    font-family: serif;
+}
+.sign_in_change {
+    height: 40px;
+    width:40%;
+    position: relative;
+    left: 30%;
+    margin: 20px;
+}
+.errors_frame {
+    font-family: serif;
+    width:100%;
+    color: white;
+    align-text: center;
+}
+.language_box {
+    float: left;
+    height: 20%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: serif;
+}
+.profile_labels {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 30px;
+    font-size: 20px;
+    border-color: white;
+    border-width: 3px;
+    border-style: solid;
+    left: 10%;
+    position: relative;
+}
+.message {
+color: white;}
+
+.error {
+width: 20px;
+}
