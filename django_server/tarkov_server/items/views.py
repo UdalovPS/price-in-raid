@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.views import View
 import json_numpy
 import json
@@ -43,11 +43,18 @@ class Main(View):
 
 
 def download(request):
-    lng = request.GET.get('lng')
-    with open(f"./static_files/web_text.json", 'r') as json_data:
-        text_dict = json.load(json_data)
-    print(text_dict[lng])
-    return HttpResponse("server is working")
+    path_to_file ="./staticfiles/dist.zip"
+    zip_file = open(path_to_file, 'rb')
+    response = FileResponse(zip_file, content_type='application/items')
+    response['Content-Disposition'] = 'attachment; filename="%s"' % 'dist.zip'
+    return response
+
+def download_instruction(request):
+    path_to_file ="./staticfiles/READMY.txt"
+    file = open(path_to_file, 'rb')
+    response = FileResponse(file, content_type='application/items')
+    response['Content-Disposition'] = 'attachment; filename="%s"' % 'READMY.txt'
+    return response
 
 
 class RegisterView(View):

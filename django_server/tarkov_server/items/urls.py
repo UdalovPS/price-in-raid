@@ -12,6 +12,7 @@ urlpatterns = [
     path("item/", csrf_exempt(views.get_item_data), name='items'),
     path("item/lng/", views.change_language, name='language'),
     path("download/", views.download, name='download'),
+    path("download_instruction/", views.download_instruction, name='download_ins'),
     path("profile/", views.get_profile, name='profile'),
     path("change/", views.ChangePasswordView.as_view(), name='change'),
     path("message/", views.ChangePasswordView.as_view(), name='message'),

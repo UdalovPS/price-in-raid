@@ -12,7 +12,7 @@
         </div>
         <div class="big_empty_box"></div>
         <div class="url_box">
-            <a href="" class="header-link">{{ texts.instruction }}</a>
+            <a href="{% url 'download_ins'%}" onclick = "location.href=this.href+'?lng='+val();return false;"  class="header-link">{{ texts.instruction }}</a>
         </div>
         <div class="url_box">
                 <a href="{% url 'download'%}" onclick = "location.href=this.href+'?lng='+val();return false;"  class="header-link">{{ texts.download }}</a>
