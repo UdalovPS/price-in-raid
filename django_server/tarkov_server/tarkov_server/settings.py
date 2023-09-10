@@ -86,10 +86,14 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
+# AUTH_PASSWORD_VALIDATORS = [
+#     {'NAME': 'app_name.password_validation.PinValidator', }
+# ]
+
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
@@ -136,7 +140,7 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'priceinraid@mail.ru'
 # EMAIL_HOST_PASSWORD = 'ixngesasnxwioptp'
-EMAIL_HOST_PASSWORD = 'AL7F2tC6yu6s1WFW3SHv'
+EMAIL_HOST_PASSWORD = '9WZgFPRSMzXgC81PAcHm'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 CSRF_COOKIE_SECURE = False
 DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600

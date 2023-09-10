@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="middle_box">
-        <form method="post" action="{% url 'register' %}">
+        <form method="POST" action="{% url 'register' %}">
             {% csrf_token %}
             <input type="hidden" name="language" id="example">
             <script type="text/javascript">
@@ -17,10 +17,17 @@
             {{ form.password1 }}
             <h4>{{ texts.password2 }}</h4>
             {{ form.password2 }}
-            <button class="sign_in" type="submit" onclick = "location.href='?lng='+val();return false;">{{ texts.create_btn }}</button>
+            <button class="sign_in" type="submit" >{{ texts.create_btn }}</button>
+<!--            <button class="sign_in" type="submit" onclick = "location.href='?lng='+val();return false;">{{ texts.create_btn }}</button>-->
             <p class="message">{{ texts.alredy_registered }} <a href="{% url 'login' %}" onclick = "location.href=this.href+'?lng='+val();return false;">{{ texts.login }}</a></p>
             <p class="error">
-                {{ form.non_field_errors }}
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <p> {{ error }} </p>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
             </p>
         </form>
     </div>

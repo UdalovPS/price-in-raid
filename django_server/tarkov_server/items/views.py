@@ -204,6 +204,7 @@ class DropPasswordView(View):
             email = form.cleaned_data.get('email')
             try:
                 obj = User.objects.get(email=email)
+                print('FIND EMAIL')
                 pwo = PasswordGenerator()
                 pwo.excludeschars = "$%^()*-_/?.,;:+#<>=&"
                 pwo.maxlen = 16
@@ -219,7 +220,8 @@ class DropPasswordView(View):
                         'items/main.html',
                         context={'texts': text_dict[lng]}
                     )
-            except:
+            except Exception as ex_:
+                print(ex_)
                 return render(
                     request,
                     'items/drop_password.html',
