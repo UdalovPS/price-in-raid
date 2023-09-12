@@ -6,18 +6,16 @@ import json
 from .json_parser.transcripter import Transcripter
 from .models import Profile
 from django.contrib.auth.models import User
-from .forms import RegistrationForm, AuthForm, DropForm
+from .forms import RegistrationForm, DropForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm
-from django.core.mail import BadHeaderError, send_mail
+from django.core.mail import send_mail
 from password_generator import PasswordGenerator
 import cv2
 
-import numpy as np
-from PIL import Image
-
 from .ai_model.torch_model import SeachMarkAI
+from .json_parser.parser import Parser
 
 class MyLogoutView(LogoutView):
     next_page = '/'
@@ -25,7 +23,12 @@ class MyLogoutView(LogoutView):
 
 class CheckView(View):
     def get(self, request):
-        return HttpResponse('Server is working!!!')
+        try:
+            p = Parser()
+            p.start()
+            return HttpResponse("Items data was update")
+        except Exception as _ex:
+            return HttpResponse(f"{_ex}")
 
 
 class Main(View):
