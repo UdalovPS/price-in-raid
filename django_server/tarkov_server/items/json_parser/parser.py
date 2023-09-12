@@ -27,7 +27,8 @@ class Parser:
     SECTION_SIZE = 200
 
     # Папка с результатами
-    RESULT_DIR = "./results"
+    RESULT_DIR = f"{os.getcwd()}/items/json_parser/results"
+
 
     CHANGE_DICT = {
             "а":"a", "б":"6", "в":"8", "г":"r", "д":"d", "е":"e", "з":"3", "й":"u", "и":"u", "к":"k", "м":"m", "н":"h", "о":"0", "п":"n", "р":"p", "с":"c", "т":"t", "у":"y","щ":"ш", "э":"9", "х":"x",
