@@ -62,6 +62,9 @@ class TarkovSellGui(QtWidgets.QMainWindow):
 
     def get_item_data(self) -> None:
         url = "http://212.109.195.150/item/"
+        self.ui.one_slot_price.setText("-")
+        self.ui.trader_slot.setText("-")
+        self.ui.trader_price_slot.setText("-")
         lng = self.ui.box_lng.currentText()
         img = self.make_np_screenshot()
         json_np = json_numpy.dumps(img)
