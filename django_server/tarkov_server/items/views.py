@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, FileResponse
 from django.views import View
-import json_numpy
+# import json_numpy
 import json
-from .json_parser.transcripter import Transcripter
+# from .json_parser.transcripter import Transcripter
 from .models import Profile
 from django.contrib.auth.models import User
 from .forms import RegistrationForm, DropForm
@@ -11,11 +11,11 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm
 from django.core.mail import send_mail
-from password_generator import PasswordGenerator
-import cv2
-
-from .ai_model.torch_model import SeachMarkAI
-from .json_parser.parser import Parser
+# from password_generator import PasswordGenerator
+# import cv2
+#
+# from .ai_model.torch_model import SeachMarkAI
+# from .json_parser.parser import Parser
 
 class MyLogoutView(LogoutView):
     next_page = '/'
