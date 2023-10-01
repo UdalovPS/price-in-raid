@@ -1,20 +1,21 @@
 import sys
-from PyQt5 import QtWidgets, uic, QtGui
+from PyQt5 import QtWidgets, uic
 from PyQt5.QtCore import Qt
 import requests
 import cv2
 import mss
 import numpy as np
-import time
 import keyboard
 import json_numpy
 from PIL import Image
+
+from torch_model import SeachMarkAI
 
 
 class TarkovSellGui(QtWidgets.QMainWindow):
     LANGUAGES = ("rus", "eng")
 
-    def __init__(self, img_width=1280, img_height=1280, delay=0.1,):
+    def __init__(self, img_width=1920, img_height=1920, delay=0.1,):
         super().__init__()
         self.ui = uic.loadUi('sell.ui')
         self._init_widgets()
@@ -22,6 +23,7 @@ class TarkovSellGui(QtWidgets.QMainWindow):
         self.img_height = img_height
         self.delay = delay
         self.setFocus()
+        self.model = SeachMarkAI(show_info_flag=True)
         self.ui.button.clicked.connect(lambda: self._test_connect())
         self.key = keyboard
         self.key.on_press_key("z", lambda _:self.get_item_data())
@@ -40,11 +42,13 @@ class TarkovSellGui(QtWidgets.QMainWindow):
     def _test_connect(self):
         """This method start or stop seaching image in monitor"""
         url = "http://212.109.195.150/test/"
+        # url = "http://127.0.0.1:8000/test/"
         data = {
             'login': self.ui.login_edit.text(),
             'password': self.ui.password_edit.text()
         }
         responce = requests.post(url=url, data=data)
+        print(responce.status_code)
         res_data = responce.json()
         self.ui.one_slot_price.setText(res_data['status'])
         self.ui.trader_slot.setText(res_data['status'])
@@ -62,24 +66,30 @@ class TarkovSellGui(QtWidgets.QMainWindow):
 
     def get_item_data(self) -> None:
         url = "http://212.109.195.150/item/"
+        # url = "http://127.0.0.1:8000/item/"
         self.ui.one_slot_price.setText("-")
         self.ui.trader_slot.setText("-")
         self.ui.trader_price_slot.setText("-")
         lng = self.ui.box_lng.currentText()
         img = self.make_np_screenshot()
-        json_np = json_numpy.dumps(img)
-        login = self.ui.login_edit.text()
-        password = self.ui.password_edit.text()
-        data = {
-            'json': json_np,
-            'login': login,
-            'password': password,
-            'lng': lng
-        }
-        response = requests.post(url=url, data=data)
-        if response.status_code == 200:
-            res_dict = response.json()
-            self._insert_prices(res_dict)
+        crop_img = self.model.seach_mark_in_screenshot(img)
+        if crop_img.size == 0:
+            data = {'traderName': 'not find', 'traderPrice': 'not find', 'pricePerSlot': 'not find', "canSellOnFlea": True}
+            self._insert_prices(data)
+        else:
+            json_np = json_numpy.dumps(crop_img)
+            login = self.ui.login_edit.text()
+            password = self.ui.password_edit.text()
+            data = {
+                'json': json_np,
+                'login': login,
+                'password': password,
+                'lng': lng
+            }
+            response = requests.post(url=url, data=data)
+            if response.status_code == 200:
+                res_dict = response.json()
+                self._insert_prices(res_dict)
 
     def show_image(self, img) -> None:
         """This is helper method"""

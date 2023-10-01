@@ -11,11 +11,11 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm
 from django.core.mail import send_mail
-from password_generator import PasswordGenerator
-import cv2
-
-from .ai_model.torch_model import SeachMarkAI
-from .json_parser.parser import Parser
+# from password_generator import PasswordGenerator
+# import cv2
+#
+# from .ai_model.torch_model import SeachMarkAI
+# from .json_parser.parser import Parser
 
 class MyLogoutView(LogoutView):
     next_page = '/'
@@ -298,19 +298,19 @@ def get_item_data(request):
         if user != None:
             transcript_obj = Transcripter()                                                     #create object for transcripte text from image
             language = request.POST['lng']
-            obj = SeachMarkAI(show_info_flag=True)                                              #create object for find mark with item name in image
+            # obj = SeachMarkAI(show_info_flag=True)                                              #create object for find mark with item name in image
             img = json_numpy.loads(request.POST['json'])                                        #load image from request
-            img = cv2.resize(img, dsize=(1280, 1280), interpolation=cv2.INTER_CUBIC)            #resize image (model train in 1920x1920)
-            crop_img = obj.seach_mark_in_screenshot(img)                                        #find mark with item
-            if crop_img.size == 0:
-                print('NOT FINDDDEDDD')
-                data = {'traderName': 'not find', 'traderPrice': 'not find', 'pricePerSlot': 'not find', "canSellOnFlea": True}
-            else:
-                # Image.fromarray(crop_img).show()
-                text = transcript_obj.transcript_text_from_image(crop_img, language=language)       #transcripte text in image
-                print('TEXT: ', text)
-                item_dict = transcript_obj.find_item_from_json_data(text, language=language)        #find data about item in database (json file)
-                return HttpResponse(json.dumps(item_dict))
+            # img = cv2.resize(img, dsize=(1280, 1280), interpolation=cv2.INTER_CUBIC)            #resize image (model train in 1920x1920)
+            # crop_img = obj.seach_mark_in_screenshot(img)                                        #find mark with item
+            # if crop_img.size == 0:
+            #     print('NOT FINDDDEDDD')
+            #     data = {'traderName': 'not find', 'traderPrice': 'not find', 'pricePerSlot': 'not find', "canSellOnFlea": True}
+            # else:
+            # Image.fromarray(crop_img).show()
+            text = transcript_obj.transcript_text_from_image(img, language=language)       #transcripte text in image
+            print('TEXT: ', text)
+            item_dict = transcript_obj.find_item_from_json_data(text, language=language)        #find data about item in database (json file)
+            return HttpResponse(json.dumps(item_dict))
         else:
             data = {'traderName': 'error auth', 'traderPrice': 'error auth', 'pricePerSlot': 'error auth', "canSellOnFlea": True}
         return HttpResponse(json.dumps(data))
