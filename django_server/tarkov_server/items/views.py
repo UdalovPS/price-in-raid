@@ -15,7 +15,7 @@ from django.core.mail import send_mail
 # import cv2
 #
 # from .ai_model.torch_model import SeachMarkAI
-# from .json_parser.parser import Parser
+from .json_parser.parser import Parser
 
 class MyLogoutView(LogoutView):
     next_page = '/'
