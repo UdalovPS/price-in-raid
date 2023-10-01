@@ -18,7 +18,7 @@ class Transcripter:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         img = cv2.bitwise_not(img)
         img = cv2.resize(img, (300, 50))
-        Image.fromarray(img).show()
+        # Image.fromarray(img).show()
         total_str = ""
         if language == "eng":
             eng_transcripte = pytesseract.image_to_string(img, lang="eng", config="--psm 6 --oem 3")
